@@ -44,17 +44,9 @@ CodexIsland 是一个原生 macOS 悬浮层，把 MacBook 刘海变成类似 Dyn
 
 ## 安装
 
-### Homebrew
-
-```sh
-brew install --cask ericjypark/tap/codexisland
-```
-
-首次运行会自动 tap `ericjypark/homebrew-tap`。这个 cask 会自动移除 Gatekeeper quarantine 属性，因为 CodexIsland 没有 Apple 签名，更新校验由 Sparkle 独立处理。
-
 ### 直接下载
 
-从 [Releases](https://github.com/ericjypark/codex-island/releases) 下载 `CodexIsland-X.Y.Z.dmg`，把应用拖进 `/Applications`，然后运行：
+从 [Releases](https://github.com/Jason880902/codex-island/releases) 下载 `CodexIsland-X.Y.Z.dmg`，把应用拖进 `/Applications`，然后运行：
 
 ```sh
 xattr -dr com.apple.quarantine /Applications/CodexIsland.app
@@ -66,7 +58,14 @@ CodexIsland 未签名，因为 Apple Developer ID 证书需要每年付费，而
 
 ## 首次运行
 
-CodexIsland 不会询问密码或 API key。它只读取你已经登录过的命令行工具或桌面应用的认证状态。
+CodexIsland 不会询问密码。它只读取你已经登录过的命令行工具或桌面应用的认证状态——只有 GLM 和 Grok 需要在设置页粘贴密钥（见下）。
+
+Kimi：
+
+- 先登录 Kimi Code CLI（`kimi login`）。
+- CodexIsland 读取 `~/.kimi-code/credentials/kimi-code.json`（支持 `KIMI_CODE_HOME` 改路径）。
+- access token 约 15 分钟轮换一次，由 CLI 自己刷新写回；过期间隙面板保留上次正常读数，不会清空成 "—%"。
+- 凭据缺失时面板显示 `auth required — run kimi`；会话被撤销时，可在面板里点 Re-authenticate 一键触发 `kimi login`。
 
 Codex：
 
@@ -77,8 +76,20 @@ Codex：
 Claude：
 
 - 运行一次 `claude`，或打开 Claude Desktop，让 Claude 凭据写入本机。
-- CodexIsland 会依次尝试 `CLAUDE_CODE_OAUTH_TOKEN`、macOS Keychain 里的 `Claude Code-credentials`，以及 Anthropic OAuth token endpoint 的刷新流程。
+- CodexIsland 依次尝试 `CLAUDE_CODE_OAUTH_TOKEN`、`~/.claude/.credentials.json`、macOS Keychain 里的 `Claude Code-credentials`。
+- 凭据访问严格只读：从不刷新 OAuth token，也从不写凭据存储。token 过期后运行一次 `claude` 即可；提示需要重新授权时运行 `claude /login`。
 - 如果都不可用，面板会显示 `auth required — run claude`。
+
+GLM（智谱）：
+
+- 打开 **设置 → API Keys**，粘贴 GLM Coding Plan 的 API key。
+- Base URL 默认 `https://open.bigmodel.cn`；国际版账号改成 `https://api.z.ai`。
+- 未填写时该槽位显示"未配置"；保存后下一轮轮询生效（也可点 `synced` 立即刷新）。
+
+Grok：
+
+- 打开 **设置 → API Keys**，粘贴 grok.com 的登录 Cookie（从浏览器开发者工具复制；非官方接口）。
+- 未填写时该槽位显示"未配置"；Cookie 失效后重新粘贴一份即可。
 
 应用启动后会立即进行第一次拉取，所以你第一次悬停时通常已经能看到数据。打开设置也会触发一次刷新。
 
@@ -119,7 +130,7 @@ Claude：
 需要 macOS 13+ 和来自 Xcode / Command Line Tools 的 Swift 工具链。
 
 ```sh
-git clone https://github.com/ericjypark/codex-island
+git clone https://github.com/Jason880902/codex-island
 cd codex-island
 ./build.sh
 open build/CodexIsland.app
@@ -146,4 +157,6 @@ npm install --global create-dmg
 
 `release.sh` 会运行原生构建，把 `.app` 复制到 `dist/`，应用 ad-hoc codesign，创建 `dist/CodexIsland-X.Y.Z.dmg`，并输出文件大小和 SHA-256。
 
-推送 `v*` tag 会触发 `.github/workflows/release.yml`，在 `macos-15` 上构建 DMG、计算 checksum、发布 GitHub Release，并在配置了 `HOMEBREW_TAP_TOKEN` 时同步 cask 到 `ericjypark/homebrew-tap`。
+本 fork 没有 CI 发布流程（上游的 GitHub Actions 依赖上游私有密钥，已移除）。发布在本地用 `release.sh` 完成后手动进行：创建 GitHub Release、上传 DMG、把输出的 SHA-256 写进发布说明。在配置本仓库自己的 Sparkle 密钥对和签名 appcast 之前，自动更新不会工作——流程见 `docs/SPARKLE.md`。
+
+`Casks/codexisland.rb` 是上游的 Homebrew Cask 模板，留作参考；本 fork 暂时没有自己的 tap。

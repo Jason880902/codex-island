@@ -119,20 +119,10 @@ notch. Relative to upstream (v0.1.17), this fork changes:
 
 ## Install
 
-### Homebrew
-
-```sh
-brew install --cask ericjypark/tap/codexisland
-```
-
-The first invocation auto-taps `ericjypark/homebrew-tap`. The cask strips the
-Gatekeeper quarantine attribute automatically (CodexIsland is unsigned by
-Apple — Sparkle handles update verification independently).
-
 ### Direct download
 
 Download the current `CodexIsland-X.Y.Z.dmg` from the
-[latest release](https://github.com/ericjypark/codex-island/releases/latest),
+[latest release](https://github.com/Jason880902/codex-island/releases/latest),
 drag the app to `/Applications`, then run:
 
 ```sh
@@ -147,10 +137,6 @@ certificate, and this is a free open-source project. The command removes the
 macOS Gatekeeper quarantine attribute that triggers the "cannot be opened
 because Apple cannot check it for malicious software" warning. The source code
 is in this repository for audit.
-
-If a sponsored Apple Developer ID becomes available via
-[GitHub Sponsors](https://github.com/sponsors/ericjypark), signed builds can
-follow.
 </details>
 
 <details>
@@ -165,8 +151,21 @@ follow.
 
 ## First run
 
-CodexIsland does not ask for passwords or API keys. It reads the auth state
-already created by the command-line tools or desktop apps you use.
+CodexIsland does not ask for passwords. It reads the auth state already
+created by the command-line tools or desktop apps you use — only GLM and
+Grok need a key pasted in Settings (see below).
+
+For Kimi:
+
+- Sign in to the Kimi Code CLI first (`kimi login`).
+- CodexIsland reads `~/.kimi-code/credentials/kimi-code.json`
+  (`KIMI_CODE_HOME` relocates it).
+- The access token rotates every ~15 minutes and the CLI rewrites it on its
+  own schedule; through expiry gaps the panel keeps the last good reading
+  instead of blanking to `—%`.
+- If credentials are missing the panel shows `auth required — run kimi`; if
+  the session is revoked, an in-panel Re-authenticate button spawns
+  `kimi login` for you.
 
 For Codex:
 
@@ -187,6 +186,21 @@ For Claude:
   token expires, or `claude /login` when the endpoint requires a newly scoped
   token.
 - If none work, the panel shows `auth required — run claude`.
+
+For GLM (Zhipu):
+
+- Open **Settings → API Keys** and paste your GLM Coding Plan API key.
+- Base URL defaults to `https://open.bigmodel.cn`; use `https://api.z.ai`
+  for international accounts.
+- Until a key is saved the slot shows "not configured"; saving takes effect
+  on the next poll (or click `synced …` to refetch immediately).
+
+For Grok:
+
+- Open **Settings → API Keys** and paste your grok.com login cookie (copied
+  from your browser's developer tools; unofficial endpoint).
+- Until a cookie is saved the slot shows "not configured"; paste a fresh one
+  when it expires.
 
 The first fetch starts at app launch so the panel usually has values ready by
 the first peek. Opening Settings also triggers a fresh fetch.
@@ -234,7 +248,7 @@ changing the app language offers to restart CodexIsland.
 Requires macOS 13+ and a Swift toolchain from Xcode / Command Line Tools.
 
 ```sh
-git clone https://github.com/ericjypark/codex-island
+git clone https://github.com/Jason880902/codex-island
 cd codex-island
 ./build.sh
 open build/CodexIsland.app
@@ -269,14 +283,14 @@ codesigning, creates `dist/CodexIsland-X.Y.Z.dmg`, signs it with Sparkle's
 EdDSA key when available, generates `dist/appcast.xml`, and prints the file size
 and SHA-256.
 
-Pushing a `v*` tag triggers `.github/workflows/release.yml` on `macos-15`,
-builds the signed DMG and appcast, generates release notes from Conventional
-Commits, publishes both artifacts in a GitHub Release, and mirrors the cask to
-`ericjypark/homebrew-tap` when `HOMEBREW_TAP_TOKEN` is configured.
+This fork has no CI release workflow (upstream's GitHub Actions were tied to
+upstream-only secrets and were removed). Releases are cut locally with
+`release.sh` and published by hand: create the GitHub Release, upload the DMG,
+and paste the printed SHA-256 into the notes. Auto-update stays dark until a
+fork-owned Sparkle key pair + signed appcast is set up — see `docs/SPARKLE.md`.
 
-`Casks/codexisland.rb` is the Homebrew Cask template. Do not manually bump its
-version or SHA for normal releases; CI copies it to the tap and rewrites those
-fields from the tag and freshly built DMG.
+`Casks/codexisland.rb` is upstream's Homebrew Cask template, kept for
+reference; there is no fork tap at this time.
 
 ## Repository layout
 
@@ -400,7 +414,7 @@ Settings, and use Settings -> Quit to exit.
 
 ## Changelog
 
-See [GitHub Releases](https://github.com/ericjypark/codex-island/releases) for
+See [GitHub Releases](https://github.com/Jason880902/codex-island/releases) for
 current release notes and [CHANGELOG.md](CHANGELOG.md) for curated milestone
 notes.
 
@@ -408,10 +422,10 @@ notes.
 
 MIT - see [LICENSE](LICENSE).
 
-<a href="https://www.star-history.com/?type=date&repos=ericjypark%2Fcodex-island">
+<a href="https://www.star-history.com/?type=date&repos=Jason880902%2Fcodex-island">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Jason880902/codex-island&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Jason880902/codex-island&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Jason880902/codex-island&type=date&legend=top-left" />
  </picture>
 </a>
