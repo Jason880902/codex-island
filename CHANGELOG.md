@@ -4,6 +4,22 @@ User-facing changes per release. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); dates are when the
 tag was cut.
 
+## [0.1.19] - 2026-07-18
+
+Update-infrastructure release: the updater now actually belongs to the fork.
+
+### Fixed
+
+- **"Check now" no longer errors out.** The update feed pointed at the fork
+  but no appcast existed there, and the embedded Sparkle public key was
+  still upstream's — fork updates could never be signed. The app now
+  embeds a fork-owned Sparkle key pair and the feed serves a signed
+  appcast. Installs from the 0.1.18 DMG can't follow (they verify against
+  the old upstream key) — install 0.1.19 manually once and every future
+  update arrives in-app.
+- **Settings footer links** (GitHub / License) pointed at the upstream
+  repository; they now open the fork's.
+
 ## [0.1.18] - 2026-07-18
 
 The multi-provider release: the island's two slots are no longer hardwired

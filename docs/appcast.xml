@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>CodexIsland</title>
+    <link>https://github.com/Jason880902/codex-island/releases/latest/download/appcast.xml</link>
+    <description>Most recent CodexIsland release.</description>
+    <language>en</language>
+    <item>
+      <title>Version 0.1.19</title>
+      <pubDate>Fri, 17 Jul 2026 18:59:03 +0000</pubDate>
+      <sparkle:version>0.1.19</sparkle:version>
+      <sparkle:shortVersionString>0.1.19</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://github.com/Jason880902/codex-island/releases/tag/v0.1.19</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/Jason880902/codex-island/releases/download/v0.1.19/CodexIsland-0.1.19.dmg" sparkle:version="0.1.19" sparkle:shortVersionString="0.1.19" length="4691712" type="application/octet-stream" sparkle:edSignature="dl1pZx4EAuPieRXefslhX+HSQ84/zXIm5MD/Yn7BotIW4iZcsxD8WnvNteOAfECgKO72c53fzu5Kyc+pp7JFDQ==" />
+    </item>
+  </channel>
+</rss>

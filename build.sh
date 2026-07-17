@@ -25,12 +25,15 @@ SPARKLE_FW="$SPARKLE_DIR/Sparkle.framework"
 
 # Public EdDSA key embedded in Info.plist as SUPublicEDKey. The PUBLIC half
 # of the keypair is safe to commit — it's meant to ship inside distributed
-# apps so Sparkle can verify update signatures. The matching PRIVATE key is
-# in the maintainer's Keychain (and the SPARKLE_ED_PRIVATE_KEY GitHub Secret
-# for CI). To rotate, see docs/SPARKLE.md — DO NOT change this lightly:
-# every existing install verifies updates against this exact public key, and
-# changing it strands them.
-SU_PUBLIC_KEY="bz1gwLBKgIL/Y7OO23o3gaMNIeTpvv/C90F9inr9Quo="
+# apps so Sparkle can verify update signatures. Fork-owned pair generated
+# 2026-07-18 — builds up to 0.1.18 embedded UPSTREAM's public key, so those
+# installs can never validate a fork update; they're migrated by a one-time
+# manual install of 0.1.19+. The matching PRIVATE key is in the maintainer's
+# Keychain (offline backup kept outside the repo). To rotate, see
+# docs/SPARKLE.md — DO NOT change this lightly: every existing install
+# verifies updates against this exact public key, and changing it strands
+# them.
+SU_PUBLIC_KEY="/OAZua2Ys9tQwCoUvHwO50nw6x+xNTwYrj6SEEA/dQw="
 
 SU_FEED_URL="${SU_FEED_URL:-https://github.com/Jason880902/codex-island/releases/latest/download/appcast.xml}"
 
