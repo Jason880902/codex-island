@@ -28,6 +28,37 @@ The app is free, open source, unsigned, and local-first. It reads credentials
 already written by the Kimi, Codex, and Claude CLIs, plus keys you paste into
 Settings for GLM and Grok, then calls only the providers' own usage endpoints.
 
+## Origin, license & what changed in this fork
+
+This repository is a **fork of
+[ericjypark/codex-island](https://github.com/ericjypark/codex-island)**
+(Copyright © 2026 Eric Park), released under the same **MIT License**. The
+upstream license is preserved in `LICENSE`; attribution and IP details live
+in `NOTICE`. Modifications are Copyright © 2026 Jason880902, likewise MIT.
+Brand names and logos belong to their respective owners and are used only
+to identify the monitored services.
+
+Upstream monitors **Claude + Codex**, hardwired to the two sides of the
+notch. Relative to upstream (v0.1.17), this fork changes:
+
+- **Five providers, two user-assignable slots.** Kimi, Codex, Claude, Grok,
+  and GLM — Settings → Providers assigns any provider to the left/right
+  island slot (or turns a slot off). Peek pills, the expanded panel,
+  Overview, and threshold alerts all follow the selection.
+- **Three new usage integrations.** Kimi (Kimi Code credentials file, with
+  in-app re-auth), GLM (Zhipu Coding Plan quota endpoint, user-supplied API
+  key), and Grok (grok.com web cookie — unofficial). Claude monitoring is
+  carried over from upstream.
+- **Reliability fix for short-lived tokens.** The Kimi peek pill no longer
+  blanks to "—%" during the CLI's ~15-minute token rotations; only a
+  server-side 401 (revoked session) replaces the last good reading.
+- **Provider-generic internals.** One shared provider enum across
+  usage/alerts/cost, provider-keyed stores, per-provider rate-limit
+  cooldowns, cost-cache schema v8, and parsing tests for all five
+  providers plus slot-store scenario tests.
+- **Sparkle feed repointed to this fork**, so upstream releases can never
+  "update" a fork install back to the two-provider original.
+
 ## What it does
 
 - **Five providers, two slots — you pick.** Kimi, Codex, Claude, Grok, and

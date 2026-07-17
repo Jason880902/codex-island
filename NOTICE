@@ -1,0 +1,29 @@
+CodexIsland — attribution and intellectual property notice
+===========================================================
+
+Upstream project
+----------------
+This repository is a fork of **codex-island** by Eric Park:
+    https://github.com/ericjypark/codex-island
+Copyright (c) 2026 Eric Park, licensed under the MIT License.
+The upstream license text is preserved unmodified in `LICENSE`.
+
+This fork
+---------
+Modifications Copyright (c) 2026 Jason880902
+(https://github.com/Jason880902/codex-island)
+
+All modifications in this fork are released under the same MIT License —
+see `LICENSE`, which applies to the work of both authors. A summary of
+what this fork changes relative to upstream is maintained in
+`README.md` ("Origin, license & what changed in this fork") and
+`README.zh-CN.md`.
+
+Trademarks
+----------
+No trademark rights are granted by either license. "CodexIsland", "Kimi",
+"Codex", "Claude", "Grok", "GLM", "ChatGPT", and related logos are
+trademarks of their respective owners (Eric Park, Moonshot AI, OpenAI,
+Anthropic, xAI, Zhipu AI). Brand logos bundled in `Resources/` and
+`Assets/` are used solely to identify the services being monitored and
+remain the property of their owners.

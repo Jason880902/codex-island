@@ -12,6 +12,18 @@ CodexIsland 是一个原生 macOS 悬浮层，把 MacBook 刘海变成类似 Dyn
 
 应用免费、开源、未签名，并且以本地优先为原则。它读取 Kimi、Codex、Claude 各自 CLI 已写入本机的凭据，以及你在设置里为 GLM、Grok 填写的密钥，只调用对应服务自己的用量接口。
 
+## 项目来源、知识产权与本次改造点
+
+本仓库是 **[ericjypark/codex-island](https://github.com/ericjypark/codex-island) 的 fork**（原作者 Eric Park，Copyright © 2026)，同样以 **MIT 协议**发布。上游协议原文完整保留在 `LICENSE`；署名与知识产权说明见 `NOTICE`。本次修改的版权为 Jason880902 所有，同样以 MIT 授权。涉及的商标与 Logo（Kimi、Codex、Claude、Grok、GLM 等）归各自所有者，仅用于标识被监控的服务。
+
+上游监控的是 **Claude + Codex**，固定显示在刘海两侧。相对上游(v0.1.17)，本 fork 的改造点：
+
+- **五家服务、两个自选槽位。** Kimi、Codex、Claude、Grok、GLM——设置 → 服务里可把任意一家分配到刘海左/右槽位（或关闭槽位），预览胶囊、展开面板、概览、限额提醒全部跟随选择。
+- **三个新的用量接入。** Kimi（读取 Kimi Code 凭据文件，支持应用内重新登录）、GLM（智谱 Coding Plan 配额接口，用户自填 API key)、Grok(grok.com 网页 Cookie，非官方）。Claude 监控沿自上游。
+- **短时效 token 的可靠性修复。** Kimi CLI 约 15 分钟轮换一次 token，刘海胶囊此前会在轮换间隙空白成 "—%"；现在只有服务器返回 401（会话被撤销）才会清空上次正常读数。
+- **内部架构 provider 通用化。** 用量/告警/成本三层统一 provider 枚举、按 provider 键控的存储、分 provider 的 429 冷却、成本缓存 v8，以及覆盖五家的解析测试和槽位存储场景测试。
+- **Sparkle 更新源改指本仓库**，避免上游发布的新版把 fork 的安装"更新"回原版两家。
+
 ## 功能
 
 - **五家服务，两个槽位，由你挑选。** Kimi、Codex、Claude、Grok、GLM 各自提供 5 小时 + 每周窗口；在设置 → 服务里把任意两家分配到刘海左右槽位（也可关闭槽位），预览胶囊、面板、概览和提醒都会跟随选择。
